@@ -1,0 +1,23 @@
+[package]
+name = "cases"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+extargsparse_worker = "^0.2.0"
+extargsparse_codegen = "^0.1.4"
+lazy_static = "^1.4.0"
+regex = "1"
+evtcall = "^0.1.2"
+base64 = "^0.13.0"
+num-bigint = "^0.4.3"
+num-bigint-dig = {version = "0.8.1", features = [    "i128",    "u64_digit",    "prime",    "zeroize"], default-features = false}
+rand_core = "^0.6.4"
+rand = "^0.8.5"
+num-traits = "^0.2.5"
+
+
+
+extlog = {path = "../../"}

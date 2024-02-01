@@ -123,7 +123,7 @@ impl Default for ExtLogVar {
 }
 
 
-pub fn init_log(ns :&ExtLogVar) -> Result<(),Box<dyn Error>> {
+pub fn ext_init_log(ns :&ExtLogVar) -> Result<(),Box<dyn Error>> {
 	let level :LevelFilter;
 	let mut rbuiler :RootBuilder;
 	let mut cbuild :ConfigBuilder;
@@ -159,7 +159,7 @@ pub fn init_log(ns :&ExtLogVar) -> Result<(),Box<dyn Error>> {
 			.filter(Box::new(ThresholdFilter::new(level)))
 			.build("stderr", Box::new(stderr)),
 			);
-		rbuiler = rbuiler.appender("stderr");		
+		rbuiler = rbuiler.appender("stderr");
 	}
 
 
@@ -211,7 +211,8 @@ pub fn init_log(ns :&ExtLogVar) -> Result<(),Box<dyn Error>> {
 	}
 
 
-	let _ = cbuild.build(rbuiler.build(level))?;
+	let config = cbuild.build(rbuiler.build(level))?;
+	let _ = log4rs::init_config(config)?;
 
 	Ok(())
 }

@@ -1,0 +1,27 @@
+[package]
+name = "extlog"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.59.0"
+author = ["jeppeter <jeppeter@gmail.com>"]
+description = """
+Rust Extension log for commandline
+"""
+license = "MIT/Apache-2.0"
+
+repository = "https://github.com/jeppeter/extlog-rs"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+chrono = "^0.4.0"
+lazy_static = "^1.4.0"
+log4rs = "^0.8.3"
+log = "^0.4.8"
+
+
+[target.'cfg(windows)'.dependencies.winapi]
+version = "0.3"
+features = ["sysinfoapi","stringapiset","debugapi", "synchapi","winsock2","ioapiset","minwinbase","errhandlingapi","handleapi","ws2def","ws2tcpip","mswsock"]
+
+

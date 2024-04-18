@@ -372,8 +372,8 @@ macro_rules! format_buffer_log {
 				}
 				_lasti += 1;
 			}
-			c.push_str("\n");
 		}
+		c.push_str("\n");
 		log_output_function($iv,&c);
 	}
 }

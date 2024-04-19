@@ -329,7 +329,7 @@ macro_rules! format_buffer_log {
 		let _totallen: usize = $len as usize;
 		let mut _lasti :usize = 0;
 		let mut _nb :u8;
-		c.push_str(&format!(" buffer [{:?}][{}]",_ptr,_totallen));
+		c.push_str(&format!(" buffer [{:?}][{}:0x{:x}]",_ptr,_totallen,_totallen));
 		_ci = 0;
 		while _ci < _totallen {
 			if (_ci % 16) == 0 {

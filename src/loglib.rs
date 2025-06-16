@@ -171,7 +171,7 @@ pub fn ext_init_log(ns :&ExtLogVar) -> Result<(),Box<dyn Error>> {
 			cbuild = cbuild.appender(Appender::builder().build(&fname, Box::new(logfile)));
 			rbuiler = rbuiler.appender(&fname);
 		} else {
-			let fpattern = format!("{}.{{}}",fname);
+			let fpattern = format!("{}.{{}}.gz",fname);
 			let mut tfiles :u32 = 1;
 			if times > 0 {
 				tfiles = times;
@@ -195,7 +195,7 @@ pub fn ext_init_log(ns :&ExtLogVar) -> Result<(),Box<dyn Error>> {
 			cbuild = cbuild.appender(Appender::builder().build(wf, Box::new(logfile)));
 			rbuiler = rbuiler.appender(wf);			
 		} else {
-			let fpattern = format!("{}.{{}}",fname);
+			let fpattern = format!("{}.{{}}.gz",fname);
 			let mut tfiles :u32 = 1;
 			if times > 0 {
 				tfiles = times;

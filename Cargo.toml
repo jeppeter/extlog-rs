@@ -1,6 +1,6 @@
 [package]
 name = "extlog"
-version = "0.1.8"
+version = "0.1.10"
 edition = "2021"
 rust-version = "1.59.0"
 author = ["jeppeter <jeppeter@gmail.com>"]
@@ -16,7 +16,7 @@ repository = "https://github.com/jeppeter/extlog-rs"
 [dependencies]
 chrono = "^0.4.0"
 lazy_static = "^1.4.0"
-log4rs = "^0.8.3"
+log4rs = {version = "^0.8.3", features=["gzip"]}
 log = "^0.4.8"
 
 

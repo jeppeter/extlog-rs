@@ -35,6 +35,7 @@ extargs_error_class!{NetHdlError}
 struct logarg {
 	num :i32,
 	stopsig :Arc<EventFd>,
+	maxsleep : u64,
 }
 
 
@@ -46,9 +47,13 @@ fn logtest_thread(arg :logarg) {
 		debug_info!("{:?} thread {} info",std::thread::current().id(),i);
 		debug_warn!("{:?} thread {} warn",std::thread::current().id(),i);
 		debug_error!("{:?} thread {} error",std::thread::current().id(),i);
-		let val :u64 = rnd.gen::<u64>() % 1000;
-		debug_error!("{:?} sleep {}",std::thread::current().id(),val);
-		std::thread::sleep(std::time::Duration::from_millis(val));
+		if arg.maxsleep > 0 {
+			let val :u64 = rnd.gen::<u64>() % arg.maxsleep;
+			if val > 0 {
+				debug_error!("{:?} sleep {}",std::thread::current().id(),val);
+				std::thread::sleep(std::time::Duration::from_millis(val));
+			}
+		}
 	}
 	debug_error!("{:?} exit [{}]",std::thread::current().id(),arg.stopsig.get_name());
 	let _ = arg.stopsig.set_event();
@@ -63,6 +68,7 @@ fn logtstthr_handler(ns :NameSpaceEx,_optargset :Option<Arc<RefCell<dyn ArgSetIm
 	let mut stopvec :Vec<Arc<EventFd>>=Vec::new();
 	let mut namevec :Vec<String> = Vec::new();
 	let mut bname :String;
+	let maxsleep :u64 = ns.get_int("maxsleep") as u64;
 	//let mut rnd = rand::thread_rng();
 
 
@@ -76,12 +82,13 @@ fn logtstthr_handler(ns :NameSpaceEx,_optargset :Option<Arc<RefCell<dyn ArgSetIm
 
 	for i in 0..thrids {
 		bname = format!("thr event {}",i);
-		let curstop :Arc<EventFd> = Arc::new(EventFd::new(0,&bname)?);
+		let curstop :Arc<EventFd> = Arc::new(EventFd::new(0,0,&bname)?);
 		namevec.push(format!("thr event {}",i));
 		stopvec.push(curstop.clone());
 		let logvar = logarg {
 			num : times,
 			stopsig : curstop.clone(),
+			maxsleep : maxsleep,
 		};
 		handles.push(std::thread::spawn(move || {
 			logtest_thread(logvar);
@@ -136,6 +143,7 @@ fn logtstthr_handler(ns :NameSpaceEx,_optargset :Option<Arc<RefCell<dyn ArgSetIm
 pub fn load_thread_handler(parser :ExtArgsParser) -> Result<(),Box<dyn Error>> {
 	let cmdline = r#"
 	{
+		"maxsleep" : 100,
 		"logtstthr<logtstthr_handler>##[times] [threads] to log##" : {
 			"$" : "*"
 		}

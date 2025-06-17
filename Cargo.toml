@@ -25,3 +25,5 @@ version = "0.3"
 features = ["sysinfoapi","stringapiset","debugapi", "synchapi","winsock2","ioapiset","minwinbase","errhandlingapi","handleapi","ws2def","ws2tcpip","mswsock"]
 
 
+[features]
+longname_mode = []

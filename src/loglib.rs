@@ -269,7 +269,22 @@ pub fn log_output_function(level :i64, outs :&str) {
 #[macro_export]
 macro_rules! format_str_log {
 	($info:tt,$iv:expr,$($arg:tt)+) => {
-		let mut c :String= format!("[{}:{}]",file!(),line!());
+		let mut c:String;
+		#[cfg(feature="longname_mode")]
+		{
+			c  = format!("[{}:{}]",file!(),line!());	
+		}		
+		#[cfg(not(feature="longname_mode"))]
+		{
+			let path = std::path::Path::new(file!());
+			let ext = path.extension();
+			let mname = path.file_stem();
+			if ext.is_some() && mname.is_some() {
+				c = format!("[{}.{}:{}]",mname.unwrap().to_string_lossy(),ext.unwrap().to_string_lossy(),line!());
+			} else {
+				c = format!("[{}:{}]",mname.unwrap().to_string_lossy(),line!());
+			}
+		}
 		c.push_str(&format!("{} ",$info));
 		c.push_str(&log_get_timestamp());
 		c.push_str(": ");
@@ -319,7 +334,22 @@ macro_rules! debug_trace {
 #[macro_export]
 macro_rules! format_buffer_log {
 	($buf:expr,$len:expr,$info:tt,$iv:expr,$($arg:tt)+) => {
-		let mut c :String = format!("[{}:{}]",file!(),line!());
+		let mut c:String;
+		#[cfg(feature="longname_mode")]
+		{
+			c  = format!("[{}:{}]",file!(),line!());	
+		}		
+		#[cfg(not(feature="longname_mode"))]
+		{
+			let path = std::path::Path::new(file!());
+			let ext = path.extension();
+			let mname = path.file_stem();
+			if ext.is_some() && mname.is_some() {
+				c = format!("[{}.{}:{}]",mname.unwrap().to_string_lossy(),ext.unwrap().to_string_lossy(),line!());
+			} else {
+				c = format!("[{}:{}]",mname.unwrap().to_string_lossy(),line!());
+			}
+		}
 		c.push_str(&format!("{} ",$info));
 		c.push_str(&log_get_timestamp());
 		c.push_str(": ");

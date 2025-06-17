@@ -17,7 +17,7 @@ num-bigint-dig = {version = "0.8.1", features = [    "i128",    "u64_digit",    
 rand_core = "^0.6.4"
 rand = "^0.8.5"
 num-traits = "^0.2.5"
-
-
-
 extlog = {path = "../../"}
+
+[features]
+longname_mode = ["extlog/longname_mode"]
